@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cert-manager
+spec:
+  releaseName: cert-manager
+  chart:
+    spec:
+      version: "v1.8.1"
+      chart: cert-manager
+      sourceRef:
+        kind: HelmRepository
+        name: emrahkk-github-io
+  interval: 5m
+  values:
+    prometheus:
+      servicemonitor:
+        enabled: true
+        prometheusInstance: prometheus
+        labels:
+          release: prometheus
+      
