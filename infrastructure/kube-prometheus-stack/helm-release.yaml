@@ -1,0 +1,126 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prometheus
+spec:
+  releaseName: prometheus
+  chart:
+    spec:
+      version: "36.0.1"
+      chart: kube-prometheus-stack
+      sourceRef:
+        kind: HelmRepository
+        name: emrahkk-github-io
+  interval: 5m
+  values:
+    alertmanager:
+      enabled: true
+      ingress:
+        enabled: true
+        # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+        # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+        ingressClassName: nginx        
+        # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+        # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+        # ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "ca-cluster-issuer"
+        labels: {}
+        ## Hosts must be provided if Ingress is enabled.
+        ##
+        hosts:
+          - alertmanager.tav.dev
+
+        ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
+        ##
+        paths:
+        - /
+        ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
+        ## See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#better-path-matching-with-path-types
+        # pathType: ImplementationSpecific
+
+        ## TLS configuration for Alertmanager Ingress
+        ## Secret must be manually created in the namespace
+        ##
+        tls:
+        - secretName: alertmanager-general-tls
+          hosts:
+          - alertmanager.tav.dev
+    prometheusOperator:    
+      admissionWebhooks:
+        # Use certmanager to generate webhook certs
+        certManager:
+          enabled: true
+          # self-signed root certificate
+          rootCert:
+            duration: ""  # default to be 5y
+          admissionCert:
+            duration: ""  # default to be 1y
+          issuerRef:
+            name: "ca-cluster-issuer"
+            kind: "ClusterIssuer"
+    prometheus:      
+      ingress:
+        enabled: true
+        # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+        # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+        ingressClassName: nginx        
+        # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+        # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+        # ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "ca-cluster-issuer"
+        labels: {}
+        ## Hosts must be provided if Ingress is enabled.
+        ##
+        hosts:
+          - prometheus.tav.dev
+
+        ## Paths to use for ingress rules - one path should match the prometheusSpec.routePrefix
+        ##
+        paths:
+        - /
+        ## For Kubernetes >= 1.18 you should specify the pathType (determines how Ingress paths should be matched)
+        ## See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#better-path-matching-with-path-types
+        # pathType: ImplementationSpecific
+
+        ## TLS configuration for prometheus Ingress
+        ## Secret must be manually created in the namespace
+        ##
+        tls:
+        - secretName: prometheus-general-tls
+          hosts:
+          - prometheus.tav.dev    
+    grafana:
+      ingress:  
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "ca-cluster-issuer"    
+        hosts:
+          - grafana.tav.dev
+        ## Path for grafana ingress
+        path: /
+        ## TLS configuration for grafana Ingress
+        ## Secret must be manually created in the namespace
+        ##
+        tls:
+        - secretName: grafana-general-tls
+          hosts:
+          - grafana.tav.dev
+      ## Passed to grafana subchart and used by servicemonitor below
+      ##
+      service:
+        portName: http-web
+      serviceMonitor:
+        # If true, a ServiceMonitor CRD is created for a prometheus operator
+        # https://github.com/coreos/prometheus-operator
+        #
+        enabled: true
+        # Path to use for scraping metrics. Might be different if server.root_url is set
+        # in grafana.ini
+        path: "/metrics"
+        #  namespace: monitoring  (defaults to use the namespace this chart is deployed to)
+        # labels for the ServiceMonitor
+        labels:
+          release: prometheus          
