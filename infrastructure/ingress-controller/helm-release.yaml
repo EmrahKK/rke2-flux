@@ -23,10 +23,4 @@ spec:
         ## Creates a service to expose the Ingress Controller pods.
         create: true
         ## The type of service to create for the Ingress Controller.
-        type: NodePort
-        httpPort:
-          ## The custom NodePort for the HTTP port. Requires controller.service.type set to NodePort.
-          nodePort: "32080"
-        httpsPort:      
-          ## The custom NodePort for the HTTPS port. Requires controller.service.type set to NodePort.
-          nodePort: "32443"
+        type: ClusterIP
