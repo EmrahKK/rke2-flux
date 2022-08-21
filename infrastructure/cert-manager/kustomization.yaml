@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: cert-manager
 resources:
 - helm-repository.yaml
-- helm-release.yaml
+#- helm-release.yaml
 - cert-manager.crds.yaml
 - ca-key-pair.yaml
 - ca-cluster-issuer.yaml
