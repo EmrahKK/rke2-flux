@@ -12,11 +12,11 @@ spec:
         kind: HelmRepository
         name: emrahkk-github-io
   interval: 5m
-  values:
-    prometheus:
-      servicemonitor:
-        enabled: true
-        prometheusInstance: prometheus
-        labels:
-          release: prometheus
+  # values:
+  #   prometheus:
+  #     servicemonitor:
+  #       enabled: true
+  #       prometheusInstance: prometheus
+  #       labels:
+  #         release: prometheus
       
