@@ -4,3 +4,4 @@ resources:
 - crds.yaml
 - operator.yaml
 - common.yaml
+- cluster.yaml
