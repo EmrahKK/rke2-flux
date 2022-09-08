@@ -5,6 +5,7 @@ metadata:
   namespace: rook-ceph
   labels:
     team: rook
+    release: prometheus
 spec:
   namespaceSelector:
     matchNames:
