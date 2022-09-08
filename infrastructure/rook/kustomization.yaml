@@ -6,3 +6,4 @@ resources:
 - common.yaml
 - cluster.yaml
 - toolbox.yaml
+- storageclass.yaml
