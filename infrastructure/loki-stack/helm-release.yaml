@@ -29,7 +29,7 @@ spec:
             store: boltdb-shipper
         storage_config:
           aws:
-            s3: http://loki:lokiuserpass@minio-release.minio.svc.cluster.local:9000/loki
+            s3: http://aQjdAgEjW4QKFHN7:tILhF3vF2evAcjE0dJZAhyLhlCaiKexp@minio-release.minio.svc.cluster.local:9000/loki
             s3forcepathstyle: true
           boltdb_shipper:
             active_index_directory: /data/loki/boltdb-shipper-active
