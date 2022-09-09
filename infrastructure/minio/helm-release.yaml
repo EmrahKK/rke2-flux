@@ -21,7 +21,7 @@ spec:
       rootUser: admin
       ## @param auth.rootPassword Password for MinIO&reg; root user
       ##
-      rootPassword: "admin"
+      rootPassword: "Admin123456#$!"
 
     ## Configure the ingress resource that allows you to access the
     ## MinIO&reg; Console. Set up the URL
