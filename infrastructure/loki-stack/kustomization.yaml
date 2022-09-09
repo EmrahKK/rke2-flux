@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: loki
 resources:
 - helm-repository.yaml
-#- helm-release.yaml
+- helm-release.yaml
