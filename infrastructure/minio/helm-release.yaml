@@ -58,9 +58,7 @@ spec:
       # Metrics can not be disabled yet: https://github.com/minio/minio/issues/7493
       serviceMonitor:
         enabled: true
-        additionalLabels:
-          release: prometheus
-          prometheus: prometheus
+        additionalLabels: {}
         relabelConfigs: {}
         # namespace: monitoring
         # interval: 30s
