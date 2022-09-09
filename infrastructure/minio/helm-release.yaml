@@ -13,6 +13,8 @@ spec:
         name: emrahkk-github-io
   interval: 5m
   values:
+    image:      
+      tag: 2022.9.7
     auth:
       ## @param auth.rootUser MinIO&reg; root username
       ##
