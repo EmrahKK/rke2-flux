@@ -36,3 +36,5 @@ spec:
             cache_location: /data/loki/boltdb-shipper-cache
             cache_ttl: 24h
             shared_store: s3
+        limits_config:
+          retention_period: 24h
