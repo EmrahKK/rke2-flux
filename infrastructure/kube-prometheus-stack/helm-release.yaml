@@ -66,7 +66,8 @@ spec:
           cpu: "250m"
         limits:
           memory: "1Gi"
-          cpu: "500m"   
+          cpu: "500m"  
+      retention: 2d 
       ingress:
         enabled: true
         # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
