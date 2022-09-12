@@ -1,0 +1,114 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vault
+spec:
+  releaseName: vault
+  chart:
+    spec:
+      version: "0.22.0"
+      chart: vault
+      sourceRef:
+        kind: HelmRepository
+        name: emrahkk-github-io
+  interval: 5m
+  values:
+    server:
+      resources: {}
+      # resources:
+      #   requests:
+      #     memory: 256Mi
+      #     cpu: 250m
+      #   limits:
+      #     memory: 256Mi
+      #     cpu: 250m
+
+      # Ingress allows ingress services to be created to allow external access
+      # from Kubernetes to access Vault pods.
+      # If deployment is on OpenShift, the following block is ignored.
+      # In order to expose the service, use the route section below
+      ingress:
+        enabled: true
+        labels: {}
+          # traffic: external
+        annotations: 
+          cert-manager.io/cluster-issuer: "ca-cluster-issuer"
+          # |
+          # kubernetes.io/ingress.class: nginx
+          # kubernetes.io/tls-acme: "true"
+          #   or
+          # kubernetes.io/ingress.class: nginx
+          # kubernetes.io/tls-acme: "true"
+
+        # Optionally use ingressClassName instead of deprecated annotation.
+        # See: https://kubernetes.io/docs/concepts/services-networking/ingress/#deprecated-annotation
+        ingressClassName: "nginx"
+
+        # As of Kubernetes 1.19, all Ingress Paths must have a pathType configured. The default value below should be sufficient in most cases.
+        # See: https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types for other possible values.
+        pathType: Prefix
+
+        # When HA mode is enabled and K8s service registration is being used,
+        # configure the ingress to point to the Vault active service.
+        activeService: true
+        hosts:
+          - host: vault.tav.dev
+            paths: []
+        ## Extra paths to prepend to the host configuration. This is useful when working with annotation based services.
+        extraPaths: []
+        # - path: /*
+        #   backend:
+        #     service:
+        #       name: ssl-redirect
+        #       port:
+        #         number: use-annotation
+        tls: 
+         - secretName: vault-general-tls
+           hosts:
+             - vault.tav.dev
+
+    # Vault is able to collect and publish various runtime metrics.
+    # Enabling this feature requires setting adding `telemetry{}` stanza to
+    # the Vault configuration. There are a few examples included in the `config` sections above.
+    #
+    # For more information see:
+    # https://www.vaultproject.io/docs/configuration/telemetry
+    # https://www.vaultproject.io/docs/internals/telemetry
+    serverTelemetry:
+      # Enable support for the Prometheus Operator. Currently, this chart does not support
+      # authenticating to Vault's metrics endpoint, so the following `telemetry{}` must be included
+      # in the `listener "tcp"{}` stanza
+      #  telemetry {
+      #    unauthenticated_metrics_access = "true"
+      #  }
+      #
+      # See the `standalone.config` for a more complete example of this.
+      #
+      # In addition, a top level `telemetry{}` stanza must also be included in the Vault configuration:
+      #
+      # example:
+      #  telemetry {
+      #    prometheus_retention_time = "30s",
+      #    disable_hostname = true
+      #  }
+      #
+      # Configuration for monitoring the Vault server.
+      serviceMonitor:
+        # The Prometheus operator *must* be installed before enabling this feature,
+        # if not the chart will fail to install due to missing CustomResourceDefinitions
+        # provided by the operator.
+        #
+        # Instructions on how to install the Helm chart can be found here:
+        #  https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+        # More information can be found here:
+        #  https://github.com/prometheus-operator/prometheus-operator
+        #  https://github.com/prometheus-operator/kube-prometheus
+
+        # Enable deployment of the Vault Server ServiceMonitor CustomResource.
+        enabled: true
+
+        # Selector labels to add to the ServiceMonitor.
+        # When empty, defaults to:
+        #  release: prometheus
+        selectors: 
+          release: prometheus
