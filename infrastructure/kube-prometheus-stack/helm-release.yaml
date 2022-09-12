@@ -59,7 +59,14 @@ spec:
           issuerRef:
             name: "ca-cluster-issuer"
             kind: "ClusterIssuer"
-    prometheus:      
+    prometheus:  
+      resources:
+        requests:
+          memory: "800Mi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+          cpu: "500m"   
       ingress:
         enabled: true
         # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
