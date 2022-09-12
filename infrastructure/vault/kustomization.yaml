@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: vault
 resources:
 - helm-repository.yaml
-- helm-release.yaml
+#- helm-release.yaml
