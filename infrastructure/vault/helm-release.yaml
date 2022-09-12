@@ -14,6 +14,22 @@ spec:
   interval: 5m
   values:
     server:
+      # This configures the Vault Statefulset to create a PVC for data
+      # storage when using the file or raft backend storage engines.
+      # See https://www.vaultproject.io/docs/configuration/storage/index.html to know more
+      dataStorage:
+        enabled: true
+        # Size of the PVC created
+        size: 1Gi
+        # Location where the PVC will be mounted.
+        mountPath: "/vault/data"
+        # Name of the storage class to use.  If null it will use the
+        # configured default Storage Class.
+        storageClass: null
+        # Access Mode of the storage device being used for the PVC
+        accessMode: ReadWriteOnce
+        # Annotations to apply to the PVC
+        annotations: {}        
       resources: {}
       # resources:
       #   requests:
