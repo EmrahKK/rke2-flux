@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: echo-server
+  name: echo-server  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server
+  strategy: {}
+  template:
+    metadata:      
+      labels:
+        app: echo-server
+    spec:
+      containers:
+      - image: emrahkk/echo-server
+        name: echo-server        
+        ports:
+        - containerPort: 8080
+          name: http-web
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10    
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1            
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
