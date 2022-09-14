@@ -5,4 +5,5 @@ resources:
 - dp.yaml
 - ing.yaml
 - ns.yaml
+- sa.yaml
 - svc.yaml

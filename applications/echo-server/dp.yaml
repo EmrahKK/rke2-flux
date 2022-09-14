@@ -15,6 +15,7 @@ spec:
       labels:
         app: echo-server
     spec:
+      serviceAccountName: echo-server
       containers:
       - image: emrahkk/echo-server
         name: echo-server        
