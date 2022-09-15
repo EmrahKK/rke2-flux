@@ -8,3 +8,10 @@ bound_service_account_names=echo-server
 bound_service_account_namespaces=echo-server 
 policies=tams-ui-read 
 ttl=72h
+
+
+vault write auth/kubernetes/role/webapp bound_service_account_names=echo-vault-auth bound_service_account_namespaces=echo-server policies=svc-policy ttl=72h
+
+
+
+kubectl create serviceaccount echo-vault-auth -n echo-server
