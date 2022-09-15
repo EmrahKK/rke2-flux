@@ -15,9 +15,9 @@ spec:
       labels:
         app: echo-server
       annotations:
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'tams-ui-read'
-        vault.hashicorp.com/agent-inject-secret-config.txt: '/kv/tams-ui/client-secret'
+        # vault.hashicorp.com/agent-inject: 'true'
+        # vault.hashicorp.com/role: 'tams-ui-read'
+        # vault.hashicorp.com/agent-inject-secret-config.txt: '/kv/tams-ui/client-secret'
     spec:
       serviceAccountName: echo-server
       containers:
