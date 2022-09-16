@@ -5,7 +5,7 @@ metadata:
     app: echo-server
   name: echo-server  
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: echo-server
@@ -16,8 +16,8 @@ spec:
         app: echo-server
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'internal-app'
-        vault.hashicorp.com/agent-inject-secret-database-config.txt: 'internal/data/database/config'
+        vault.hashicorp.com/role: 'echo-server-dev'
+        vault.hashicorp.com/agent-inject-secret-database-config.txt: 'dev/apps/echo-server'
         # vault.hashicorp.com/agent-inject: 'true'
         # vault.hashicorp.com/role: 'tams-ui-read'
         # vault.hashicorp.com/agent-inject-secret-config.txt: '/kv/tams-ui/client-secret'
@@ -25,9 +25,9 @@ spec:
         # vault.hashicorp.com/role: 'webapp'
         # vault.hashicorp.com/agent-inject-secret-config.txt: 'kv/dev/apps/service01'
     spec:
-      serviceAccountName: internal-app
+      serviceAccountName: echo-server
       containers:
-      - image: emrahkk/echo-server
+      - image: emrahkk/echo-server:go
         name: echo-server        
         ports:
         - containerPort: 8080
