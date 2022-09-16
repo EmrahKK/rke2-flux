@@ -16,7 +16,7 @@ spec:
         app: echo-server
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'echo-server-dev'
+        vault.hashicorp.com/role: 'echo-server-read-role'
         vault.hashicorp.com/agent-inject-secret-database-config.txt: 'dev/apps/echo-server'
         # vault.hashicorp.com/agent-inject: 'true'
         # vault.hashicorp.com/role: 'tams-ui-read'
