@@ -18,3 +18,22 @@ kubectl create serviceaccount echo-vault-auth -n echo-server
 
 Sep 16, 2022 12:15 AM
 Thu Sep 15 21:18:12 UTC 2022
+
+----------------------------------------------------
+
+# create internal kv store
+vault secrets enable -path=internal kv-v2
+
+# create internal/app/echo-server secret
+vault kv put internal/app/echo-server db_username="ech-server" db_password="12345678"	 
+
+# create read policy for the secret
+vault policy write echo-server - <<EOF
+path "internal/app/echo-server" {
+  capabilities = ["read"]
+}
+EOF
+
+# create role to bind the service account and policy
+
+vault write auth/kubernetes/role/echo-server bound_service_account_names=echo-server bound_service_account_namespaces=echo-server policies=echo-server ttl=24h
