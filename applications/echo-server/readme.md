@@ -15,3 +15,6 @@ vault write auth/kubernetes/role/webapp bound_service_account_names=echo-vault-a
 
 
 kubectl create serviceaccount echo-vault-auth -n echo-server
+
+Sep 16, 2022 12:15 AM
+Thu Sep 15 21:18:12 UTC 2022
