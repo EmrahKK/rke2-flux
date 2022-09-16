@@ -29,7 +29,7 @@ vault kv put internal/app/echo-server db_username="ech-server" db_password="1234
 
 # create read policy for the secret
 vault policy write echo-server - <<EOF
-path "internal/app/echo-server" {
+path "internal/data/app/echo-server" {
   capabilities = ["read"]
 }
 EOF
