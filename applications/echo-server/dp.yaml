@@ -5,7 +5,7 @@ metadata:
     app: echo-server
   name: echo-server  
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: echo-server
@@ -16,8 +16,8 @@ spec:
         app: echo-server
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'echo-server-read-role'
-        vault.hashicorp.com/agent-inject-secret-database-config.txt: 'kv/dev/apps/echo-server'
+        vault.hashicorp.com/role: 'echo-server'
+        vault.hashicorp.com/agent-inject-secret-database-config.txt: 'kv/apps/echo-server'
         # vault.hashicorp.com/agent-inject: 'true'
         # vault.hashicorp.com/role: 'tams-ui-read'
         # vault.hashicorp.com/agent-inject-secret-config.txt: '/kv/tams-ui/client-secret'
