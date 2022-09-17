@@ -17,7 +17,11 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'echo-server'
-        vault.hashicorp.com/agent-inject-secret-app-config.txt: 'internal/data/app/echo-server'
+        #vault.hashicorp.com/agent-inject-secret-app-config.txt: 'internal/data/app/echo-server'
+        vault.hashicorp.com/agent-inject-template-application.yaml: |
+          {{- with secret "internal/data/app/echo-server-java" -}}
+          {{ .Data.data| parseYAML }}
+          {{- end }}
         # vault.hashicorp.com/agent-inject: 'true'
         # vault.hashicorp.com/role: 'tams-ui-read'
         # vault.hashicorp.com/agent-inject-secret-config.txt: '/kv/tams-ui/client-secret'
