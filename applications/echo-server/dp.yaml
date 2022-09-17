@@ -21,7 +21,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-application.yaml: 'internal/data/app/echo-server-java'
         vault.hashicorp.com/agent-inject-template-application.yaml: |
           {{- with secret "internal/data/app/echo-server-java" -}}
-          {{ .Data.data.value }}
+          {{ .Data.data.value | toYAML }}
           {{- end }}
         # vault.hashicorp.com/agent-inject: 'true'
         # vault.hashicorp.com/role: 'tams-ui-read'
