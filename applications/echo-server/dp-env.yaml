@@ -31,7 +31,7 @@ spec:
         imagePullPolicy: Always
         name: echo-server 
         args:
-            ['sh', '-c', 'source /vault/secrets/env && /app/entrypoint.sh']
+            ['bash', '-c', 'source /vault/secrets/env && /app/entrypoint.sh']
         ports:
         - containerPort: 8080
           name: http-web
