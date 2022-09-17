@@ -23,16 +23,12 @@ spec:
           {{- with secret "internal/data/app/echo-server-java" -}}
           {{ .Data.data | toYAML }}
           {{- end }}
-        # vault.hashicorp.com/agent-inject: 'true'
-        # vault.hashicorp.com/role: 'tams-ui-read'
-        # vault.hashicorp.com/agent-inject-secret-config.txt: '/kv/tams-ui/client-secret'
-        # vault.hashicorp.com/agent-inject: 'true'
-        # vault.hashicorp.com/role: 'webapp'
-        # vault.hashicorp.com/agent-inject-secret-config.txt: 'kv/dev/apps/service01'
+          
     spec:
       serviceAccountName: echo-server
       containers:
       - image: emrahkk/echo-server:java
+        imagePullPolicy: Always
         name: echo-server        
         ports:
         - containerPort: 8080

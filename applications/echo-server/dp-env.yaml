@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: echo-server
+  name: echo-server  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server
+  strategy: {}
+  template:
+    metadata:      
+      labels:
+        app: echo-server
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'echo-server'
+        #vault.hashicorp.com/secret-volume-path: '/app/config'
+        vault.hashicorp.com/agent-inject-secret-env: 'internal/data/app/echo-server-java'
+        vault.hashicorp.com/agent-inject-template-env: |
+          {{- with secret "internal/data/app/echo-server-java" -}}
+            export SPRING_APPLICATION_JSON="{{ .Data.data }}"
+          {{- end }}
+          
+    spec:
+      serviceAccountName: echo-server
+      containers:
+      - image: emrahkk/echo-server:java
+        imagePullPolicy: Always
+        name: echo-server 
+        args:
+            ['sh', '-c', 'source /vault/secrets/env && /app/entrypoint.sh']
+        ports:
+        - containerPort: 8080
+          name: http-web
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10    
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1            
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "125m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
