@@ -21,7 +21,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-env: 'internal/data/app/echo-server-java'
         vault.hashicorp.com/agent-inject-template-env: |
           {{- with secret "internal/data/app/echo-server-java" -}}
-            export SPRING_APPLICATION_JSON="{{ .Data.data }}"
+            export SPRING_APPLICATION_JSON="{{ .Data.data | toJSON }}"
           {{- end }}
           
     spec:
