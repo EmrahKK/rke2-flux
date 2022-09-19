@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: echo-server    
+    prometheus: prometheus
+    release: prometheus
+  name: echo-server
+spec:
+  endpoints:
+  - honorLabels: false
+    interval: 60s
+    path: /actuator/prometheus
+    scrapeTimeout: 30s
+    targetPort: 80
+  jobLabel: echo-server
+  selector:
+    matchLabels:      
+      app.kubernetes.io/instance: echo-server
+      app.kubernetes.io/name: echo-server

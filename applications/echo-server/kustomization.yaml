@@ -7,3 +7,4 @@ resources:
 - ns.yaml
 - sa.yaml
 - svc.yaml
+- sm.yaml
